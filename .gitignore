@@ -1,0 +1,10 @@
+node_modules/
+dist/
+data/state.json
+logs/*.log
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+*.tsbuildinfo

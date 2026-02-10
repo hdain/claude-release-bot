@@ -1,0 +1,28 @@
+{
+  "name": "claude-release-bot",
+  "version": "1.0.0",
+  "description": "Claude Code release notifier bot with AI-summarized Telegram alerts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "once": "tsx src/index.ts --once",
+    "build": "tsc",
+    "test:version": "tsx src/version-checker.ts",
+    "test:gemini": "tsx src/ai-summarizer.ts",
+    "test:telegram": "tsx src/telegram-notifier.ts"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "dotenv": "^16.4.7",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/node-cron": "^3.0.11",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

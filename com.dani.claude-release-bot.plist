@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.dani.claude-release-bot</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/dani/.nvm/versions/node/v24.11.1/bin/npx</string>
+        <string>tsx</string>
+        <string>/Users/dani/Documents/GitHub/claude-release-bot/src/index.ts</string>
+        <string>--once</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/dani/Documents/GitHub/claude-release-bot</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/dani/.nvm/versions/node/v24.11.1/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <!-- Run every 4 hours -->
+    <key>StartInterval</key>
+    <integer>14400</integer>
+
+    <!-- Run immediately when loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/dani/Documents/GitHub/claude-release-bot/logs/launchd-stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/dani/Documents/GitHub/claude-release-bot/logs/launchd-stderr.log</string>
+</dict>
+</plist>
