@@ -6,7 +6,7 @@ An agent that automatically detects new Claude Code releases and sends **AI-summ
 
 ## Features
 
-- Auto-detect new releases via GitHub Releases polling (default: every 4 hours)
+- Auto-detect new releases via GitHub Releases polling (6 times/day)
 - AI-powered changelog summary using Gemini (Korean / English)
 - Practical usage tips included (new commands, config changes, etc.)
 - Graceful fallback to raw changelog when AI summarization fails
@@ -50,7 +50,7 @@ There are two ways to run the bot continuously. **Choose one, not both:**
 
 #### Option A: Daemon mode (`pnpm start`)
 
-The process stays alive and uses node-cron for scheduling internally.
+The process stays alive and uses node-cron for scheduling internally. The interval is controlled by the `CHECK_INTERVAL_HOURS` env variable (default: 4 hours).
 
 ```bash
 pnpm start
@@ -62,7 +62,9 @@ pnpm start
 
 #### Option B: macOS launchd (recommended)
 
-macOS launches the bot every 4 hours in `--once` mode, then the process exits. Survives reboots automatically.
+macOS launches the bot at fixed times in `--once` mode, then the process exits. The default schedule runs 6 times a day (1:00, 5:00, 9:00, 13:00, 17:00, 21:00). To change the schedule, edit the `StartCalendarInterval` entries in the plist file directly.
+
+Uses `StartCalendarInterval`, so if the Mac was asleep during a scheduled time, it catches up with **a single run** on wake (not all missed runs).
 
 > **Note:** Rename the plist file replacing `dani` with your username (e.g. `com.yourname.claude-release-bot.plist`), and update the paths inside to match your environment (Node.js path, project directory).
 
@@ -80,6 +82,7 @@ launchctl unload ~/Library/LaunchAgents/com.{username}.claude-release-bot.plist
 - Runs in the background without a terminal
 - Auto-starts on login, survives reboots
 - Lower memory usage (process exits between checks)
+- `CHECK_INTERVAL_HOURS` does **not** affect launchd — edit the plist to change the schedule
 
 **Check service status:**
 
@@ -101,8 +104,9 @@ Optional settings in `.env`:
 # ko (Korean), en (English)
 SUMMARY_LANGUAGE=ko
 
-# Check interval in hours (default: 4)
+# Check interval in hours — pnpm start only (default: 4)
 # Recommended: 1, 2, 3, 4, 6, 8, 12, 24
+# Note: launchd ignores this; edit the plist to change the schedule
 CHECK_INTERVAL_HOURS=4
 
 # Log level (debug, info, warn, error)

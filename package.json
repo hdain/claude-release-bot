@@ -1,6 +1,6 @@
 {
   "name": "claude-release-bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code release notifier bot with AI-summarized Telegram alerts",
   "type": "module",
   "scripts": {

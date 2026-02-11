@@ -22,9 +22,16 @@
         <string>/Users/dani/.nvm/versions/node/v24.11.1/bin:/usr/local/bin:/usr/bin:/bin</string>
     </dict>
 
-    <!-- Run every 4 hours -->
-    <key>StartInterval</key>
-    <integer>14400</integer>
+    <!-- Run at 1, 5, 9, 13, 17, 21 (every 4 hours) -->
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>1</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>5</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>13</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>17</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
 
     <!-- Run immediately when loaded -->
     <key>RunAtLoad</key>

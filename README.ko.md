@@ -6,7 +6,7 @@ Claude Code의 새 버전을 자동 감지하여 **AI 요약 알림**을 Telegra
 
 ## 주요 기능
 
-- GitHub Releases 폴링으로 새 버전 자동 감지 (기본 4시간 간격)
+- GitHub Releases 폴링으로 새 버전 자동 감지 (하루 6회)
 - Gemini AI를 활용한 변경사항 요약 (한국어/영어 지원)
 - 실용적 활용 팁 포함 (새 명령어, 설정 변경법 등)
 - AI 요약 실패 시 raw 변경사항으로 fallback
@@ -50,7 +50,7 @@ pnpm once
 
 #### 방법 A: 상주 모드 (`pnpm start`)
 
-프로세스가 계속 떠있으면서 내부 node-cron으로 스케줄링합니다.
+프로세스가 계속 떠있으면서 내부 node-cron으로 스케줄링합니다. 체크 간격은 `CHECK_INTERVAL_HOURS` 환경변수로 조절합니다 (기본: 4시간).
 
 ```bash
 pnpm start
@@ -62,7 +62,9 @@ pnpm start
 
 #### 방법 B: macOS launchd (권장)
 
-macOS가 4시간마다 `--once` 모드로 봇을 실행하고, 완료되면 프로세스가 종료됩니다.
+macOS가 정해진 시각에 `--once` 모드로 봇을 실행하고, 완료되면 프로세스가 종료됩니다. 기본 스케줄은 하루 6회 (1:00, 5:00, 9:00, 13:00, 17:00, 21:00)이며, 시각을 변경하려면 plist 파일의 `StartCalendarInterval`을 직접 수정하세요.
+
+`StartCalendarInterval`을 사용하므로, Mac이 잠자기 중 놓친 스케줄이 있으면 깨어날 때 **1회만** catch-up 실행됩니다 (놓친 횟수만큼 실행되지 않음).
 
 > **참고:** plist 파일명의 `dani`를 본인 유저이름으로 변경하고 (예: `com.yourname.claude-release-bot.plist`), 내부 경로도 본인 환경에 맞게 수정하세요 (Node.js 경로, 프로젝트 디렉토리).
 
@@ -80,6 +82,7 @@ launchctl unload ~/Library/LaunchAgents/com.{username}.claude-release-bot.plist
 - 터미널 없이 백그라운드 실행
 - 로그인 시 자동 시작, 재부팅에도 유지
 - 체크 사이에 프로세스가 종료되어 메모리 절약
+- `CHECK_INTERVAL_HOURS`는 launchd에 **영향 없음** — 스케줄 변경은 plist 직접 수정
 
 **서비스 상태 확인:**
 
@@ -101,8 +104,9 @@ cat logs/launchd-stdout.log
 # ko (한국어), en (English)
 SUMMARY_LANGUAGE=ko
 
-# 체크 간격 - 시간 단위 (기본: 4)
+# 체크 간격 - pnpm start 전용, 시간 단위 (기본: 4)
 # 권장값: 1, 2, 3, 4, 6, 8, 12, 24
+# 참고: launchd 사용 시 무시됨 — plist를 직접 수정하세요
 CHECK_INTERVAL_HOURS=4
 
 # 로그 레벨 (debug, info, warn, error)
